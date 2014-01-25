@@ -23,8 +23,10 @@ base_url = 'https://'+config.DOMAIN
 # Dirty hack for differences in 10gen and edX implementation
 if 'edx' in config.DOMAIN.split('.'):
     login_url = '/login_ajax'
+    article_tags_css_class = 'course honor'
 else:
     login_url = '/login'
+    article_tags_css_class = 'my-course'
 
 dashboard_url = '/dashboard'
 youtube_url = 'http://www.youtube.com/watch?v='
@@ -83,7 +85,7 @@ class EdXBrowser(object):
         if self._logged_in:
             dashboard = self._br.open(base_url + dashboard_url)
             dashboard_soup = BeautifulSoup(dashboard.read())
-            my_courses = dashboard_soup.findAll('article', 'my-course')
+            my_courses = dashboard_soup.findAll('article', article_tags_css_class)
             i = 0
             for my_course in my_courses:
                 course_url = my_course.a['href']
